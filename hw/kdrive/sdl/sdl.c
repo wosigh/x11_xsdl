@@ -36,6 +36,8 @@
 
 static int screen_width = -1, screen_height = -1;
 
+// static int keyboard_enabled = 0;
+
 typedef struct
 {
   long x1, x2, y1, y2;
@@ -45,6 +47,19 @@ typedef struct
 
 //XXX: include <pdl.h> ?
 void PDL_SetOrientation( int orientation );
+//void PDL_SetVirtualKeyboardEnabled( char set );
+void PDL_SetKeyboardState( char set );
+
+void EnableKeyboard(char enable)
+{
+  PDL_SetKeyboardState(enable);
+  //if (PDL_SetVirtualKeyboardEnabled)
+  //  PDL_SetVirtualKeyboardEnabled(enable);
+  //else if (PDL_SetKeyboardState)
+  //  PDL_SetKeyboardState(enable);
+  //else
+  //  fprintf(stderr, "Keyboard support unavailable!\n");
+}
 
 #define PDL_ORIENTATION_BOTTOM 0
 #define PDL_ORIENTATION_RIGHT 1
@@ -465,6 +480,9 @@ void sdlTimer(void)
         KdEnqueuePointerEvent(sdlPointer, mouseState, newx, newy, 0);
         break;
       case SDL_MOUSEBUTTONDOWN:
+
+        EnableKeyboard(1);
+
         switch(event.button.button)
         {
           case 1:
@@ -498,6 +516,7 @@ void sdlTimer(void)
         break;
       case SDL_KEYDOWN:
       case SDL_KEYUP:
+        fprintf(stderr, "KEY ACTIVITY!\n");
         //We want keycodes in SDL 0->127 and 255+, but X only wants 8-255.
         //so we map 255+ to 127+ by subtracting 127
         keyToPass = event.key.keysym.sym > 255 ? event.key.keysym.sym - 127 :

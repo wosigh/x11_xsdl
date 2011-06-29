@@ -396,7 +396,8 @@ Xsdl_LDADD = \
 	@KDRIVE_LIBS@                                  \
 	@XSDL_LIBS@                                    \
 	-lGLESv2 -lpdl                                 \
-	-Wl,-rpath=/usr/local/lib
+	-Wl,-rpath=/usr/local/lib \
+	-Wl,--allow-shlib-undefined
 
 Xsdl_DEPENDENCIES = @KDRIVE_LOCAL_LIBS@
 Xsdl_LDFLAGS = $(LD_EXPORT_SYMBOLS_FLAG)

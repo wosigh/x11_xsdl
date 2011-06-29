@@ -367,6 +367,7 @@ LockServer(void)
        */
       errno = 0;
       t = kill(l_pid, 0);
+ 
       if ((t< 0) && (errno == ESRCH)) {
         /*
          * Stale lock file.
